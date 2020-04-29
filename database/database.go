@@ -7,7 +7,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres" // pg driver
 )
 
-var db *gorm.DB
+var MyDB *gorm.DB
 
 func Init() {
 	host := "127.0.0.1"
@@ -20,9 +20,9 @@ func Init() {
 	connCfg := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
 		host, port, dbUser, dbName, password)
 
-	db, err = gorm.Open("postgres", connCfg)
+	MyDB, err = gorm.Open("postgres", connCfg)
 	if err != nil {
 		fmt.Println(err)
+		panic(err)
 	}
-	defer db.Close()
 }
