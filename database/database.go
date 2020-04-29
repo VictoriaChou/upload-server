@@ -1,29 +1,28 @@
 package database
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // pg driver
 )
 
-type User struct {
-	gorm.Model
-	Name string
-	Age  int16
-}
+var db *gorm.DB
 
-func main() error {
-	db, err := gorm.Open("172.17.0.2", "postgres")
+func Init() {
+	host := "127.0.0.1"
+	port := "5432"
+	dbUser := "postgres"
+	dbName := "postgres"
+	password := "secret"
+
+	var err error
+	connCfg := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+		host, port, dbUser, dbName, password)
+
+	db, err = gorm.Open("postgres", connCfg)
 	if err != nil {
-		panic("failed to connect database")
+		fmt.Println(err)
 	}
 	defer db.Close()
-
-	db.AutoMigrate(&User{})
-
-	// Create
-	db.Create(&User{Name: "Scarlett", Age: 18})
-
-	// Read
-	var user User
-	db.First(&user, "name = ?", "Scarlett")
 }
