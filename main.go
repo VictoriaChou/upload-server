@@ -11,6 +11,7 @@ import (
 func main() {
 	database.Init()
 	defer database.MyDB.Close()
-	http.HandleFunc("/user", handlers.GetUserHandler)
-	log.Fatal(http.ListenAndServe("0.0.0.0:3000", nil))
+	http.HandleFunc("/api/user", handlers.GetUserHandler)
+	http.HandleFunc("/api/upload", handlers.UploadHandler)
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
